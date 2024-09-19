@@ -30,7 +30,7 @@ export const GET = async (request: NextRequest) => {
     studentId = (<Payload>payload).studentId;
 
     //read role information from "payload" here (just one line code!)
-    role = (<Payload>payload).studentId;
+    role = (<Payload>payload).role;
   } catch {
     return NextResponse.json(
       {
@@ -45,7 +45,7 @@ export const GET = async (request: NextRequest) => {
     if (role === "ADMIN"){
      return NextResponse.json({
       ok: true,
-       enrollments: null //replace null with enrollment data!
+       enrollments: DB.enrollments //replace null with enrollment data!
      })
    }
 
@@ -102,7 +102,7 @@ export const POST = async (request: NextRequest) => {
     if (role === "ADMIN"){
      return NextResponse.json({
       ok: true,
-     message: "Only Student can access this API route",
+      message: "Only Student can access this API route",
      }, { status: 403 });
     }
 
@@ -182,8 +182,9 @@ export const DELETE = async (request: NextRequest) => {
 
   try {
     const payload = jwt.verify(token, secret);
-    studentId = (<Payload>payload).studentId;
 
+    studentId = (<Payload>payload).studentId;
+    
     role = (<Payload>payload).role;
   } catch {
     return NextResponse.json(
